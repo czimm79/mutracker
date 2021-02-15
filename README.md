@@ -1,4 +1,4 @@
-# MicroTracker
+# MuTracker
 
 
 This repository contains all of the scripts and macros needed to analyze multiple moving particles in microscopy videos and export their data.
@@ -16,6 +16,13 @@ For those unfamiliar with using Python, I highly recommend:
 2. [VSCode](https://code.visualstudio.com/) - My favorite development environment for Python. It runs both scripts and jupyter notebooks, is lightweight, works well with virtual environments, and has great git integration.
 3. [A low-level understanding of virtual environments](https://towardsdatascience.com/getting-started-with-python-environments-using-conda-32e9f2779307) - To use this package without manually adding all package dependencies yourself, I'd suggest using a virtual environment. The only command you need is `conda env create -f environment.yml` because I've already set up the list of packages in this repository.
 4. [Fiji](https://imagej.net/Fiji) - Not Python, but used in this workflow because Fiji/ImageJ does blob identification really well.
+
+## Changelog
+2/15/2021
+* Changed name from microtracker -> mutracker to match with other software.
+* Added more explanation in the analysis portion of the software.
+* Added FFT functionality to extract rotation rate
+* Added single frame trajectory preview to avoid having to make an entire video.
 
 ## Extra info
 Written by Coy Zimmermann in 2021 as part of my PhD thesis work on magnetically propelled microwheels in Dr. David W.M. Marr's group at the Colorado School of Mines.
