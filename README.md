@@ -1,4 +1,4 @@
-# MicroTracker
+# MuTracker
 
 
 This repository contains all of the scripts and macros needed to analyze multiple moving particles in microscopy videos and export their data.
