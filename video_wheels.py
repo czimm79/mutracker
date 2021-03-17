@@ -59,8 +59,8 @@ def make_video(vid_path, features_df, export_path, clip_frames=None, fps=30):
 
 if __name__ == '__main__':
     print(os.getcwd())
-    feat_df = pd.read_csv('linked_results/201109_1023AM.csv')
-    wheel_vid_names = ['D'] 
+    feat_df = pd.read_csv('linked_results/210301_0848AM.csv')
+    wheel_vid_names = ['glass_1'] 
     for i in wheel_vid_names:
         feat_df = feat_df[feat_df['filename'] == i]
         vid_path = f'original_video/{i}/*.tif'

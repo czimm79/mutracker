@@ -24,9 +24,16 @@ def link(path, FPS, MPP, SEARCH_RANGE_MICRONS, MEMORY, STUBS, MIN_VELOCITY, MIN_
         df['Label'] = df['Label'].astype('str')
         df['Label'] = df['Label'].str.split(':').str[2]
         df['frame'] = df['Label'].astype('int')
+
     elif type(df['Label'].values[0]) != str:
         # The column is already in int format
         df['frame'] = df['Label']
+
+    elif df['Label'].values[0].split(' ')[-1] == 's':  # if the exported csv has time data instead, convert back to frames...
+        # Other format
+        df['imagejtime'] = df['Label'].str.split(' ').str[0].str.split(':').str[-1].astype(float)
+        df['approx_frame'] = df['imagejtime'] * FPS
+        df['frame'] = df['approx_frame'].round().astype(int)
     else:
         # Other format
         df['frame'] = df['Label'].str.split('_').str[2].str.lstrip('0')
@@ -68,9 +75,9 @@ def link(path, FPS, MPP, SEARCH_RANGE_MICRONS, MEMORY, STUBS, MIN_VELOCITY, MIN_
     t2 = t2[~t2['particle'].isin(hp)]  # The unary (~) operator negates the conditional, i.e. takes everything except the huge particles
 
     # Eliminate wheels whose means are slower than MIN_VELOCITY
-    fp = t2.groupby('particle').mean()['dx_m'] > MIN_VELOCITY  # fp = fast_particles
-    fp = fp[fp].index.values
-    t2 = t2[t2['particle'].isin(fp)]
+    # fp = t2.groupby('particle').mean()['dx_m'] > MIN_VELOCITY  # fp = fast_particles
+    # fp = fp[fp].index.values
+    # t2 = t2[t2['particle'].isin(fp)]
 
     t2['filename'] = filename
 
@@ -116,7 +123,7 @@ def calc_velocity(df):
 if __name__ == "__main__":
     # Video properties
     FPS = 10.01  # Frames per second
-    MPP = 0.667  # Microns per pixel, scale of objective. 0.667 = 10x, 1.25t
+    MPP = 0.557  # Microns per pixel, scale of objective. 0.667 = 10x, 1.25t prior
     
     # Linking parameters
     SEARCH_RANGE_MICRONS = 250 # microns/s. Fastest a particle could be traveling. Determines "how far" to look to link.
@@ -124,8 +131,8 @@ if __name__ == "__main__":
     STUBS = 10  # trajectory needs to exist for at least this many frames to be tracked
 
     # Filtering parameters
-    MIN_VELOCITY = 0  # um / s  (threshold forward velocity)
-    MIN_DIAMETER = 9.6  # um
+    MIN_VELOCITY = None  # um / s  threshold forward velocity, not used unless code above is uncommented.
+    MIN_DIAMETER = 4.5  # um
     MIN_AREA = np.pi * (MIN_DIAMETER / 2) ** 2
     MAX_AREA = 36000 # um^2
 
