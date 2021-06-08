@@ -47,6 +47,7 @@ def make_video(vid_path, features_df, export_path, clip_frames=None, fps=30):
         fig = plt.figure(figsize=(16, 10))
         plt.imshow(frame)
         axes = tp.plot_traj(features_df.query(f'frame<={fnum}'), label=True)
+        plt.annotate(f"Frame -> {fnum} | Time -> {round(fnum / fps, 2)} s", (0, 20))
         axes.set_yticklabels([])
         axes.set_xticklabels([])
         axes.get_xaxis().set_ticks([])
@@ -59,9 +60,10 @@ def make_video(vid_path, features_df, export_path, clip_frames=None, fps=30):
 
 if __name__ == '__main__':
     print(os.getcwd())
-    feat_df = pd.read_csv('linked_results/210301_0848AM.csv')
-    wheel_vid_names = ['glass_1'] 
+    feat_df = pd.read_csv('linked_results/210608_1124AM.csv')
+    wheel_vid_names = ['05182021_8'] 
+    fps = 31.38
     for i in wheel_vid_names:
         feat_df = feat_df[feat_df['filename'] == i]
         vid_path = f'original_video/{i}/*.tif'
-        make_video(vid_path=vid_path, features_df=feat_df, export_path=f'linked_video/{i}.mp4')
+        make_video(vid_path=vid_path, features_df=feat_df, export_path=f'linked_video/{i}.mp4', fps=fps)

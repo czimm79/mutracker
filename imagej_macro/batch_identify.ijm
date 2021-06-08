@@ -1,14 +1,14 @@
-input_folder = "C:/Wormhole/OneDrive/Python/public mutracker/mutracker/original_video"
-output_folder = "C:/Wormhole/OneDrive/Python/public mutracker/mutracker/imagej_data"
-outline_folder = "C:/Wormhole/OneDrive/Python/public mutracker/mutracker/imagej_outline_videos"
+input_folder = "G:/Wormhole/OneDrive/Python/public mutracker/mutracker/original_video"
+output_folder = "G:/Wormhole/OneDrive/Python/public mutracker/mutracker/imagej_data"
+outline_folder = "G:/Wormhole/OneDrive/Python/public mutracker/mutracker/imagej_outline_videos"
 
 // min_size calculation and explanation
 // For wheel videos at 10x, 1.25t, mpp = 0.667
 // I want to exclude imaging artifacts (dust, speck on cambera) that would be less than a monomer, accounting for
 // optical imaging artifacts. The corona of the colloid extends to about 1.5sigma, or 6.75 um diameter.
 // For wheel videos, the area of a 6.75 um particle would be 80.435 pix^2. Round down to 80.
-// For logan 4x 2t, mpp= 1.618.
-min_size = 80
+// For logan 4x 2t, mpp= 1.618. 20 for logan for 05182021 videos
+min_size = 20
 
 THRESHOLD = 7913  // ONLY used if constant threshold binary is enabled. Commented out by default.
 
@@ -46,9 +46,9 @@ function process(stack_name, input_folder, output_folder, outline_folder) {
 
 
 	// Save outlines
-	File.makeDirectory(outline_directory);
-	run("Image Sequence... ", "format=TIFF name=a save=outline_path");
-	close();
+//	File.makeDirectory(outline_directory);
+//	run("Image Sequence... ", "format=TIFF name=a save=outline_path");
+//	close();
 
 	
 	saveAs("Results", output_path);

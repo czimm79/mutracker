@@ -34,5 +34,11 @@ For those unfamiliar with using Python, I highly recommend:
 * By default, Fiji macro does an automatic binary step.
 * Typo fixes in `analysis.ipynb`.
 
+6/8/2021
+* Added a method to either whitelist or blacklist tracked wheels using excel file `chosenwheels.xls`
+* Added `xlrd` requirement in environment.yml
+* Added `stubs_seconds` to more easily specify stubs instead of calculating the frames manually depending on your video fps
+* Added frame and time annotation on the top of tracked videos generated from `video_wheels.py`
+
 ## Extra info
 Written by Coy Zimmermann in 2021 as part of my PhD thesis work on magnetically propelled microwheels in Dr. David W.M. Marr's group at the Colorado School of Mines.

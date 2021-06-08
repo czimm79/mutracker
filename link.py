@@ -34,9 +34,10 @@ def link(path, FPS, MPP, SEARCH_RANGE_MICRONS, MEMORY, STUBS, MIN_VELOCITY, MIN_
         df['imagejtime'] = df['Label'].str.split(' ').str[0].str.split(':').str[-1].astype(float)
         df['approx_frame'] = df['imagejtime'] * FPS
         df['frame'] = df['approx_frame'].round().astype(int)
+
     else:
         # Other format
-        df['frame'] = df['Label'].str.split('_').str[2].str.lstrip('0')
+        df['frame'] = df['Label'].str.split('_').str[2].str.lstrip('0').str.rstrip('.tif')
         df['frame'] = pd.to_numeric(df['frame'])
 
     df.drop(labels=['Label', ' '], inplace=True, axis=1)
@@ -82,7 +83,7 @@ def link(path, FPS, MPP, SEARCH_RANGE_MICRONS, MEMORY, STUBS, MIN_VELOCITY, MIN_
     t2['filename'] = filename
 
     # Make a unique particle column, to prevent interference between videos.
-    t2['particle_u'] = t2['filename'] + t2['particle'].astype(str)
+    t2['particle_u'] = t2['filename'] + '-' + t2['particle'].astype(str)
 
     return t2
 
@@ -122,13 +123,14 @@ def calc_velocity(df):
 
 if __name__ == "__main__":
     # Video properties
-    FPS = 10.01  # Frames per second
-    MPP = 0.557  # Microns per pixel, scale of objective. 0.667 = 10x, 1.25t prior
+    FPS = 31.38  # Frames per second  logan
+    MPP = 1.618  # Microns per pixel, scale of objective. logan
     
     # Linking parameters
     SEARCH_RANGE_MICRONS = 250 # microns/s. Fastest a particle could be traveling. Determines "how far" to look to link.
     MEMORY = 0  # number of frames the blob can dissapear and still be remembered
-    STUBS = 10  # trajectory needs to exist for at least this many frames to be tracked
+    stubs_seconds = 3.0  # trajectory needs to exist for at least this many seconds to be tracked
+    STUBS = stubs_seconds * FPS  # trajectory needs to exist for at least this many frames to be tracked
 
     # Filtering parameters
     MIN_VELOCITY = None  # um / s  threshold forward velocity, not used unless code above is uncommented.
