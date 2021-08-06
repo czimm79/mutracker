@@ -23,22 +23,28 @@ For those unfamiliar with using Python, I highly recommend:
 4. [Fiji](https://imagej.net/Fiji) - Not Python, but used in this workflow because Fiji/ImageJ does blob identification really well.
 
 ## Changelog
-2/15/2021
-* Changed name from microtracker -> mutracker to match with other software.
-* Added more explanation in the analysis portion of the software.
-* Added FFT functionality to extract rotation rate
-* Added single frame trajectory preview to avoid having to make an entire video.
-
-3/17/2021
-* Cleaned up README, added more explanation
-* By default, Fiji macro does an automatic binary step.
-* Typo fixes in `analysis.ipynb`.
+8/6/2021
+* v1.0! Quality of life fixes, including:
+* Changed the filename detection to just strip `.csv`, allowing for more flexibility with filenames
+* Moved the `Label` column translation step its own function `label2frame` to isolate the most common stumbling block
+* More explanation in `analysis.ipynb` about how plotting works and a link to a tutorial for pandas string comprehension
 
 6/8/2021
 * Added a method to either whitelist or blacklist tracked wheels using excel file `chosenwheels.xls`
 * Added `xlrd` requirement in environment.yml
 * Added `stubs_seconds` to more easily specify stubs instead of calculating the frames manually depending on your video fps
 * Added frame and time annotation on the top of tracked videos generated from `video_wheels.py`
+
+3/17/2021
+* Cleaned up README, added more explanation
+* By default, Fiji macro does an automatic binary step.
+* Typo fixes in `analysis.ipynb`.
+
+2/15/2021
+* Changed name from microtracker -> mutracker to match with other software.
+* Added more explanation in the analysis portion of the software.
+* Added FFT functionality to extract rotation rate
+* Added single frame trajectory preview to avoid having to make an entire video.
 
 ## Extra info
 Written by Coy Zimmermann in 2021 as part of my PhD thesis work on magnetically propelled microwheels in Dr. David W.M. Marr's group at the Colorado School of Mines.
