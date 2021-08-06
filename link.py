@@ -6,6 +6,7 @@ import numpy as np
 from glob import glob
 import datetime
 
+
 def link(path, FPS, MPP, SEARCH_RANGE_MICRONS, MEMORY, STUBS, MIN_VELOCITY, MIN_AREA, MAX_AREA):
     """
     Given the path of a csv file output from ImageJ particle analysis, link, filter, and label the trajectories.
@@ -15,30 +16,11 @@ def link(path, FPS, MPP, SEARCH_RANGE_MICRONS, MEMORY, STUBS, MIN_VELOCITY, MIN_
     df = pd.read_csv(path)
 
     # Pull info from filename
-    filename = path.split('\\')[-1].split('.')[0]
+    filename = path.split('\\')[-1].rstrip('.csv')
     print(f'Processing {path}')
 
-    # Clean up output data from fiji. It seems to change the label column randomly, so I've accounted for both here.
-    if "slice" in df['Label'].values[0]:
-        # Clean up results df for 1:slice:23 format
-        df['Label'] = df['Label'].astype('str')
-        df['Label'] = df['Label'].str.split(':').str[2]
-        df['frame'] = df['Label'].astype('int')
-
-    elif type(df['Label'].values[0]) != str:
-        # The column is already in int format
-        df['frame'] = df['Label']
-
-    elif df['Label'].values[0].split(' ')[-1] == 's':  # if the exported csv has time data instead, convert back to frames...
-        # Other format
-        df['imagejtime'] = df['Label'].str.split(' ').str[0].str.split(':').str[-1].astype(float)
-        df['approx_frame'] = df['imagejtime'] * FPS
-        df['frame'] = df['approx_frame'].round().astype(int)
-
-    else:
-        # Other format
-        df['frame'] = df['Label'].str.split('_').str[2].str.lstrip('0').str.rstrip('.tif')
-        df['frame'] = pd.to_numeric(df['frame'])
+    # Get the frame information from the imagejdata
+    df = label2frame(df)
 
     df.drop(labels=['Label', ' '], inplace=True, axis=1)
     df.rename({'X': 'x', 'Y': 'y'}, axis=1, inplace=True)
@@ -73,7 +55,7 @@ def link(path, FPS, MPP, SEARCH_RANGE_MICRONS, MEMORY, STUBS, MIN_VELOCITY, MIN_
     # Eliminate wheels smaller than MAX_AREA
     hp = t2.groupby('particle').max()['Area_m'] > MAX_AREA   # hp = huge particles
     hp = hp[hp].index.values
-    t2 = t2[~t2['particle'].isin(hp)]  # The unary (~) operator negates the conditional, i.e. takes everything except the huge particles
+    t2 = t2[~t2['particle'].isin(hp)]  # The (~) operator negates the conditional, i.e. takes everything except the huge particles
 
     # Eliminate wheels whose means are slower than MIN_VELOCITY
     # fp = t2.groupby('particle').mean()['dx_m'] > MIN_VELOCITY  # fp = fast_particles
@@ -86,6 +68,40 @@ def link(path, FPS, MPP, SEARCH_RANGE_MICRONS, MEMORY, STUBS, MIN_VELOCITY, MIN_
     t2['particle_u'] = t2['filename'] + '-' + t2['particle'].astype(str)
 
     return t2
+
+
+def label2frame(df):
+    """
+    Take the `Label` column in the data from ImageJ and convert it to a `frame` column. This varies according to the recording method and microscope used.
+
+    This accounts for a few microscopes used in the Marr Lab, but you will most likely need to add an if statement to account for your `Label` column.
+    """
+    labels = df['Label']  # the column of labels
+    label = labels.values[0]  # just the first row of the Label column
+
+    print(f'Your label looks like -> {label}')
+
+    # 1:slice:23 format
+    if "slice" in labels.values[0]:
+        df['Label'] = labels.astype('str')
+        df['Label'] = df['Label'].str.split(':').str[2]
+        df['frame'] = df['Label'].astype('int')
+
+    # already in correct int format
+    elif type(label) != str:
+        df['frame'] = labels
+
+    # ImageJ already has time data, convert back to frames
+    elif df['Label'].values[0].split(' ')[-1] == 's':
+        df['imagejtime'] = labels.str.split(' ').str[-2].str.split(':').str[-1].astype(float)
+        df['approx_frame'] = df['imagejtime'] * FPS
+        df['frame'] = df['approx_frame'].round().astype(int)
+
+    else:  # Logan
+        df['frame'] = labels.str.split('_').str[2].str.lstrip('0').str.rstrip('.tif')
+        df['frame'] = pd.to_numeric(df['frame'])
+
+    return df
 
 
 def calc_velocity(df):
@@ -123,13 +139,13 @@ def calc_velocity(df):
 
 if __name__ == "__main__":
     # Video properties
-    FPS = 31.38  # Frames per second  logan
-    MPP = 1.618  # Microns per pixel, scale of objective. logan
+    FPS = 10.0  # Frames per second 
+    MPP = 0.618  # Microns per pixel, scale of objective.
     
     # Linking parameters
     SEARCH_RANGE_MICRONS = 250 # microns/s. Fastest a particle could be traveling. Determines "how far" to look to link.
     MEMORY = 0  # number of frames the blob can dissapear and still be remembered
-    stubs_seconds = 3.0  # trajectory needs to exist for at least this many seconds to be tracked
+    stubs_seconds = 1.0  # trajectory needs to exist for at least this many seconds to be tracked
     STUBS = stubs_seconds * FPS  # trajectory needs to exist for at least this many frames to be tracked
 
     # Filtering parameters

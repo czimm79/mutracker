@@ -6,7 +6,7 @@ This repository contains all of the scripts and macros needed to analyze multipl
 Brief workflow overview:
 1. **Prep Video** Open raw video in ImageJ, crop and clip frames to analyze. Save as tiff image sequence in folder `/original_video`.
 2. **Identify Blobs** Open the macro contained in `/imagej` in Fiji (ImageJ) using Plugins -> Macros -> Edit. Change the filepaths so they direct to your mutracker folder on your system and tweak the minimum particle size if you'd like to exclude small dust particles. This macro also saves a video of the blob outlines in `/imagej_outline_videos` so you can confirm the blob identification worked correctly.
-3. **Link Blobs between frames** Run `link.py` to link the blobs found by ImageJ on each frame together into cohesive trajectories. Make sure to change `FPS`, `MPP`, as they change on the microscope used. Filters based on minimum velocities, max and min areas, etc. Exports data to a csv in `/linked_results`.
+3. **Link Blobs between frames** Run `link.py` to link the blobs found by ImageJ on each frame together into cohesive trajectories. Make sure to change `FPS`, `MPP`, as they change depending on the microscope used. Filters based on minimum velocities, max and min areas, etc. Exports data to a csv in `/linked_results`.
 4. **Analyze and Plot** Use the prepared Python notebook `analysis.ipynb`. I've included some basic plots, but the Python package [seaborn](https://seaborn.pydata.org/) has great documentation to support custom plots to match your needs.
 5. _Optional -_ Run `video_wheels.py` to generate a video with overlaid trajectories. Great to confirm your tracking is working as intended. As a bonus - it looks pretty cool.
 
