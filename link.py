@@ -82,7 +82,7 @@ def label2frame(df):
     print(f'Your label looks like -> {label}')
 
     # 1:slice:23 format
-    if "slice" in labels.values[0]:
+    if "slice" in label:
         df['Label'] = labels.astype('str')
         df['Label'] = df['Label'].str.split(':').str[2]
         df['frame'] = df['Label'].astype('int')
@@ -92,7 +92,7 @@ def label2frame(df):
         df['frame'] = labels
 
     # ImageJ already has time data, convert back to frames
-    elif df['Label'].values[0].split(' ')[-1] == 's':
+    elif label.split(' ')[-1] == 's':
         df['imagejtime'] = labels.str.split(' ').str[-2].str.split(':').str[-1].astype(float)
         df['approx_frame'] = df['imagejtime'] * FPS
         df['frame'] = df['approx_frame'].round().astype(int)
