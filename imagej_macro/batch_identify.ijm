@@ -1,6 +1,6 @@
-input_folder = "G:/Wormhole/OneDrive/Python/public mutracker/mutracker/original_video"
-output_folder = "G:/Wormhole/OneDrive/Python/public mutracker/mutracker/imagej_data"
-outline_folder = "G:/Wormhole/OneDrive/Python/public mutracker/mutracker/imagej_outline_videos"
+input_folder = "/Users/marrgroup/Documents/GitHub/mutracker/original_video"
+output_folder = "/Users/marrgroup/Documents/GitHub/mutracker/imagej_data"
+outline_folder = "/Users/marrgroup/Documents/GitHub/mutracker/imagej_outline_videos"
 
 // min_size calculation and explanation
 // For wheel videos at 10x, 1.25t, mpp = 0.667

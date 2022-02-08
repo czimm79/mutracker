@@ -22,6 +22,9 @@ For those unfamiliar with using Python, I highly recommend:
 3. [A low-level understanding of virtual environments](https://towardsdatascience.com/getting-started-with-python-environments-using-conda-32e9f2779307) - To use this package without manually adding all package dependencies yourself, I'd suggest using a virtual environment. The only command you need is `conda env create -f environment.yml` because I've already set up the list of packages in this repository.
 4. [Fiji](https://imagej.net/Fiji) - Not Python, but used in this workflow because Fiji/ImageJ does blob identification really well.
 
+## Mac Specific
+* If running MuTracker on a mac, use environment_mac.yml instead. After installing, virtual environments are at this file path by default: `/opt/anaconda3/envs/mutrackermac/bin/python`
+
 ## Changelog
 8/6/2021
 * v1.0! Quality of life fixes, including:

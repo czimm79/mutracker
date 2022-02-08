@@ -103,4 +103,3 @@ dependencies:
   - zstd=1.4.5=h04227a9_0
   - pip:
     - imageio-ffmpeg==0.4.2
-prefix: C:\Users\coyzi\Anaconda3\envs\mutracker
