@@ -26,6 +26,10 @@ For those unfamiliar with using Python, I highly recommend:
 * If running MuTracker on a mac, use environment_mac.yml instead. After installing, virtual environments are at this file path by default: `/opt/anaconda3/envs/mutrackermac/bin/python`
 
 ## Changelog
+2/8/2022
+* v1.1. Adding mac compatibility. This adds `environment_mac.yml` for creating mac virtual environments.
+* All backslashes were replaced with platform agnostic `os.sep`
+
 8/6/2021
 * v1.0! Quality of life fixes, including:
 * Changed the filename detection to just strip `.csv`, allowing for more flexibility with filenames
