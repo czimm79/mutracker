@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from glob import glob
 import datetime
+import os
 
 
 def link(path, FPS, MPP, SEARCH_RANGE_MICRONS, MEMORY, STUBS, MIN_VELOCITY, MIN_AREA, MAX_AREA):
@@ -16,7 +17,7 @@ def link(path, FPS, MPP, SEARCH_RANGE_MICRONS, MEMORY, STUBS, MIN_VELOCITY, MIN_
     df = pd.read_csv(path)
 
     # Pull info from filename
-    filename = path.split('\\')[-1].rstrip('.csv')
+    filename = path.split(os.sep)[-1].rstrip('.csv')
     print(f'Processing {path}')
 
     # Get the frame information from the imagejdata
@@ -139,18 +140,18 @@ def calc_velocity(df):
 
 if __name__ == "__main__":
     # Video properties
-    FPS = 10.0  # Frames per second 
-    MPP = 0.618  # Microns per pixel, scale of objective.
+    FPS = 29.52  # Frames per second 
+    MPP = 1.618  # Microns per pixel, scale of objective.
     
     # Linking parameters
     SEARCH_RANGE_MICRONS = 250 # microns/s. Fastest a particle could be traveling. Determines "how far" to look to link.
     MEMORY = 0  # number of frames the blob can dissapear and still be remembered
-    stubs_seconds = 1.0  # trajectory needs to exist for at least this many seconds to be tracked
+    stubs_seconds = 5.0  # trajectory needs to exist for at least this many seconds to be tracked
     STUBS = stubs_seconds * FPS  # trajectory needs to exist for at least this many frames to be tracked
 
     # Filtering parameters
     MIN_VELOCITY = None  # um / s  threshold forward velocity, not used unless code above is uncommented.
-    MIN_DIAMETER = 4.5  # um
+    MIN_DIAMETER = 6.75  # um
     MIN_AREA = np.pi * (MIN_DIAMETER / 2) ** 2
     MAX_AREA = 36000 # um^2
 
