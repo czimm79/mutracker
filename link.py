@@ -47,7 +47,9 @@ def link(path, FPS, MPP, SEARCH_RANGE_MICRONS, MEMORY, STUBS, MIN_VELOCITY, MIN_
     t2['dv_m'] = t2['dv'] * FPS * MPP  # total velocity in microns/s
     t2['Area_m'] = t2['Area'] * MPP ** 2  # area in microns^2
     t2['dx_m'] = t2['dx'] * FPS * MPP  # x velocity in microns/s, defined as the left/right movement.
-
+    t2['Major_m'] = t2['Major'] * MPP  # Major diameter of the fit ellipse in microns
+    t2['Minor_m'] = t2['Minor'] * MPP  # Minor diameter of the fit ellipse in microns
+    
     # Keep wheels larger than MIN_AREA
     bp = t2.groupby('particle').mean()['Area_m'] > MIN_AREA  # bp = big_particles
     bp = bp[bp].index.values
