@@ -39,7 +39,7 @@ function process(stack_name, input_folder, output_folder, outline_folder) {
 //	run("Close");
 
 	// Other way of making binary without choosing a threshold. Works similar, can use this if wanted.
-	run("Make Binary", "method=Default background=Default calculate black");
+	run("Make Binary", "method=Default background=Default black");
 	
 	run("Set Measurements...", "area centroid center fit display redirect=None decimal=3");
 	run("Analyze Particles...", "size=min_size-Infinity show=Outlines display clear stack");
